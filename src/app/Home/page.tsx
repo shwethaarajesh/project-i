@@ -4,6 +4,7 @@ import { CgProfile } from "react-icons/cg";
 import { IoMdArrowDropdown } from "react-icons/io";
 import FeaturedListings from "../components/FeaturedListings/FeaturedListings";
 import Button from "../components/Button/Button";
+import Link from "next/link";
 
 export default function HomePage() {
   return (
@@ -28,7 +29,9 @@ export default function HomePage() {
         </div>
         <div className="flex gap-4 mt-8 flex-col justify-center items-center">
           <div className="font-sans font-light text-xs">Title image bg</div>
-          <Button text={"Get Started"}></Button>
+          <Link href={"/CreateListing"}>
+            <Button text={"Get Started"}></Button>
+          </Link>
         </div>
       </div>
       <div className="m-6">
