@@ -15,6 +15,7 @@ export default function CreateListing() {
   const [ageLimit, setAgeLimit] = useState("");
   const [gender, setGender] = useState("");
   const [socialMediaLinks, setSocialMediaLinks] = useState([""]);
+  const [isNoOfLinksMore, setIsNoOfLinksMore] = useState(false);
 
   const onChangeEventName = (event: ChangeEvent<HTMLInputElement>) => {
     setEventName(event.target.value);
@@ -56,19 +57,21 @@ export default function CreateListing() {
     event: ChangeEvent<HTMLInputElement>,
     index: number
   ) => {
-    const copyOfLinks: string[] = [];
-    socialMediaLinks.forEach((link, i) => {
-      if (index == i) {
-        copyOfLinks.push(link);
-      } else {
-        copyOfLinks.push(event.target.value);
-      }
-    });
-
-    setSocialMediaLinks(copyOfLinks);
+    const updatedLinks = socialMediaLinks.map((link, i) =>
+      i === index ? event.target.value : link
+    );
+    setSocialMediaLinks(updatedLinks);
   };
 
-  useEffect(() => {}, [socialMediaLinks]);
+  const onClickAddSocialLink = () => {
+    if (socialMediaLinks.length === 3) {
+      setIsNoOfLinksMore(true);
+      return;
+    }
+    const copy = structuredClone(socialMediaLinks);
+    copy.push("");
+    setSocialMediaLinks(copy);
+  };
 
   const commonGenres = ["Movie", "Picnic", "Shopping", "Concert"];
   return (
@@ -173,27 +176,25 @@ export default function CreateListing() {
             </div>
             {socialMediaLinks.map((eachLink, index) => {
               return (
-                <div className="flex gap-3 " key={eachLink + index.toString()}>
+                <div className="flex gap-3 " key={index}>
                   <div className="w-[90%]">
                     <input
                       className="w-full bg-secondary-extralight p-2 drop-shadow-md font-sans font-light text-md"
                       type="text"
                       value={socialMediaLinks[index]}
-                      onFocus={() => setIsFocused(false)}
                       onChange={(e: any) => {
                         onChangeSocialLinks(e, index);
+                      }}
+                      onFocus={() => {
+                        setIsFocused(false);
+                        setIsNoOfLinksMore(false);
                       }}
                     />
                   </div>
                   {index == socialMediaLinks.length - 1 && (
                     <div
-                      className="w-[10%] mt-6 cursor-pointer flex justify-center items-center text-center text-[8px]"
-                      onClick={() => {
-                        const copy = structuredClone(socialMediaLinks);
-                        copy.push("");
-                        setSocialMediaLinks(copy);
-                        console.log("Pushed", socialMediaLinks.length);
-                      }}
+                      className="w-[5%] mt-6 cursor-pointer flex justify-center items-center text-center text-[8px]"
+                      onClick={onClickAddSocialLink}
                     >
                       {" "}
                       Plus{" "}
@@ -202,13 +203,13 @@ export default function CreateListing() {
                 </div>
               );
             })}
+
+            {isNoOfLinksMore && (
+              <div className=" mt-3 font-sans font-light text-xs text-red-400">
+                {"Cannot have more than 3 links"}
+              </div>
+            )}
           </div>
-          {/* <FormComponent
-            header={"Social media links"}
-            stateName={gender}
-            onChangeEventName={onChangeGender}
-            onFocus={() => setIsFocused(false)}
-          ></FormComponent> */}
         </div>
       </div>
     </div>
