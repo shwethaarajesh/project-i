@@ -16,6 +16,7 @@ export default function CreateListing() {
     setGenre(event.target.value);
   };
 
+  const commonGenres = ["Movie", "Picnic", "Shopping", "Concert"];
   return (
     <div className="">
       <div className="bg-primary-light p-4">
@@ -27,15 +28,37 @@ export default function CreateListing() {
             header={"Event Name"}
             stateName={eventName}
             onChangeEventName={onChangeEventName}
+            onFocus={() => setIsFocused(false)}
           ></FormComponent>
           <FormComponent
             header={"Genre of event"}
             stateName={genre}
             onChangeEventName={onChangeGenre}
             onFocus={() => setIsFocused(true)}
-            onBlur={() => setIsFocused(false)}
           ></FormComponent>
-          {isFocused && <div>Genre popup</div>}
+          {isFocused && (
+            <div>
+              <div className="font-sans font-light text-xs italic mb-3">
+                People commonly choose
+              </div>
+              <div className="flex gap-4">
+                {commonGenres.map((eachgenre) => {
+                  return (
+                    <div
+                      className={`w-auto px-5 py-[10px] rounded-2xl font-sans font-light text-xs italic ${
+                        eachgenre == genre
+                          ? "bg-secondary-light"
+                          : "bg-secondary-extralight shadow-sm"
+                      }`}
+                      onClick={() => setGenre(eachgenre)}
+                    >
+                      {eachgenre}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
