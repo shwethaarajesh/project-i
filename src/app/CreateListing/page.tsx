@@ -2,7 +2,9 @@
 import Button from "../components/Button/Button";
 import FormComponent from "../components/FormComponent/FormComponent";
 import Header from "../components/Header/Header";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useState } from "react";
+import { IoMdAdd } from "react-icons/io";
+import { FiMinus } from "react-icons/fi";
 
 export default function CreateListing() {
   const [eventName, setEventName] = useState("");
@@ -72,6 +74,16 @@ export default function CreateListing() {
     const copy = structuredClone(socialMediaLinks);
     copy.push("");
     setSocialMediaLinks(copy);
+  };
+
+  const onClickRemoveSocialLink = (index: number) => {
+    const updatedLinks = [
+      ...socialMediaLinks.slice(0, index),
+      ...socialMediaLinks.slice(index + 1),
+    ];
+
+    setIsNoOfLinksMore(false);
+    setSocialMediaLinks(updatedLinks);
   };
 
   const commonGenres = ["Movie", "Picnic", "Shopping", "Concert"];
@@ -193,12 +205,24 @@ export default function CreateListing() {
                     />
                   </div>
                   {index == socialMediaLinks.length - 1 && (
-                    <div
-                      className="w-[5%] mt-6 cursor-pointer flex justify-center items-center text-center text-[8px]"
-                      onClick={onClickAddSocialLink}
-                    >
-                      {" "}
-                      Plus{" "}
+                    <div className="w-[5%] flex justify-center items-center">
+                      <div
+                        className=" cursor-pointer  "
+                        onClick={onClickAddSocialLink}
+                      >
+                        <IoMdAdd size={16}></IoMdAdd>
+                      </div>
+
+                      {index > 0 && (
+                        <div
+                          className=" cursor-pointer  "
+                          onClick={() => {
+                            onClickRemoveSocialLink(index);
+                          }}
+                        >
+                          <FiMinus size={16}></FiMinus>
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>
