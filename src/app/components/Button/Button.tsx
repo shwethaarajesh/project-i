@@ -2,13 +2,15 @@ import Image from "next/image";
 
 export default function Button(props: {
   text: string;
-  onClick?: Function;
+  onClick?: any;
   className?: string;
   containerClassName?: string;
 }) {
+  const blankFunc = () => {};
   return (
     <div className={props.containerClassName}>
       <button
+        onClick={props.onClick || blankFunc}
         className={
           props.className
             ? props.className

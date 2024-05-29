@@ -18,7 +18,6 @@ export default function CreateListing() {
   const [ageLimit, setAgeLimit] = useState("");
   const [gender, setGender] = useState("");
   const [socialMediaLinks, setSocialMediaLinks] = useState([""]);
-  const [isNoOfLinksMore, setIsNoOfLinksMore] = useState(false);
 
   const onChangeEventName = (event: ChangeEvent<HTMLInputElement>) => {
     setEventName(event.target.value);
@@ -67,10 +66,6 @@ export default function CreateListing() {
   };
 
   const onClickAddSocialLink = () => {
-    if (socialMediaLinks.length === 3) {
-      setIsNoOfLinksMore(true);
-      return;
-    }
     const copy = structuredClone(socialMediaLinks);
     copy.push("");
     setSocialMediaLinks(copy);
@@ -81,9 +76,23 @@ export default function CreateListing() {
       ...socialMediaLinks.slice(0, index),
       ...socialMediaLinks.slice(index + 1),
     ];
-
-    setIsNoOfLinksMore(false);
     setSocialMediaLinks(updatedLinks);
+  };
+
+  const onSubmit = () => {
+    const eventJson = {
+      eventName: eventName,
+      eventGenre: genre,
+      noOfPeople: noOfPeople,
+      location: location,
+      eventType: eventType,
+      enrollBy: enrollBy,
+      description: description,
+      ageLimit: ageLimit,
+      preferredGender: gender,
+      socialMediaLinks: socialMediaLinks,
+    };
+    console.log("Submitted", eventJson);
   };
 
   const commonGenres = ["Movie", "Picnic", "Shopping", "Concert"];
@@ -185,7 +194,7 @@ export default function CreateListing() {
 
           <div className="flex flex-col gap-4">
             <div className="font-sans font-light text-xs">
-              {"Social media links"}
+              {"Social media links (Max:3)"}
             </div>
             {socialMediaLinks.map((eachLink, index) => {
               return (
@@ -200,43 +209,46 @@ export default function CreateListing() {
                       }}
                       onFocus={() => {
                         setIsFocused(false);
-                        setIsNoOfLinksMore(false);
                       }}
                     />
                   </div>
-                  {index == socialMediaLinks.length - 1 && (
-                    <div className="w-[5%] flex justify-center items-center">
+                  <div className="w-[5%] flex justify-center items-center">
+                    {index == socialMediaLinks.length - 1 && index != 2 && (
                       <div
                         className=" cursor-pointer  "
                         onClick={onClickAddSocialLink}
                       >
                         <IoMdAdd size={16}></IoMdAdd>
                       </div>
-
-                      {index > 0 && (
-                        <div
-                          className=" cursor-pointer  "
-                          onClick={() => {
-                            onClickRemoveSocialLink(index);
-                          }}
-                        >
-                          <FiMinus size={16}></FiMinus>
-                        </div>
-                      )}
-                    </div>
-                  )}
+                    )}
+                    {(index > 0 ||
+                      (index == 0 && socialMediaLinks.length > 1)) && (
+                      <div
+                        className=" cursor-pointer  "
+                        onClick={() => {
+                          onClickRemoveSocialLink(index);
+                        }}
+                      >
+                        <FiMinus size={16}></FiMinus>
+                      </div>
+                    )}
+                  </div>
                 </div>
               );
             })}
 
-            {isNoOfLinksMore && (
+            {/* {isNoOfLinksMore && (
               <div className=" mt-3 font-sans font-light text-xs text-red-400">
                 {"Cannot have more than 3 links"}
               </div>
-            )}
+            )} */}
           </div>
 
           <Button
+            onClick={() => {
+              console.log("hi");
+              onSubmit();
+            }}
             containerClassName="w-full flex justify-center items-center"
             className="mt-6 flex justify-center items-center  bg-secondary-light px-5 py-2 font-sans rounded-lg font-light text-sm border shadow-md hover:shadow-xl"
             text={"Create Event Now !"}
