@@ -4,7 +4,7 @@ import { IoMdArrowDropdown } from "react-icons/io";
 
 export default function Header() {
   return (
-    <div className="grid gap-4 font-sans grid-cols-12 font-light items-center ">
+    <div className="grid  gap-4 font-sans grid-cols-12 font-light items-center ">
       <button>
         <GoHome size={20} />
       </button>
