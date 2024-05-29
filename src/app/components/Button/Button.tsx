@@ -4,9 +4,10 @@ export default function Button(props: {
   text: string;
   onClick?: Function;
   className?: string;
+  containerClassName?: string;
 }) {
   return (
-    <div className="">
+    <div className={props.containerClassName}>
       <button
         className={
           props.className

@@ -1,4 +1,5 @@
 "use client";
+import Button from "../components/Button/Button";
 import FormComponent from "../components/FormComponent/FormComponent";
 import Header from "../components/Header/Header";
 import { ChangeEvent, useEffect, useState } from "react";
@@ -210,6 +211,12 @@ export default function CreateListing() {
               </div>
             )}
           </div>
+
+          <Button
+            containerClassName="w-full flex justify-center items-center"
+            className="mt-6 flex justify-center items-center  bg-secondary-light px-5 py-2 font-sans rounded-lg font-light text-sm border shadow-md hover:shadow-xl"
+            text={"Create Event Now !"}
+          ></Button>
         </div>
       </div>
     </div>
