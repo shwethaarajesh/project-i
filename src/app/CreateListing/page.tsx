@@ -7,6 +7,7 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { IoMdAdd } from "react-icons/io";
 import { FiMinus } from "react-icons/fi";
 import FormDropdown from "../components/FormDropdown/FormDropdown";
+import { MdDeleteOutline } from "react-icons/md";
 
 interface ILocation {
   cities: string[];
@@ -533,7 +534,7 @@ export default function CreateListing() {
             <div className="flex gap-4  items-center">
               <label
                 htmlFor="files"
-                className=" min-w-[90px] w-[30%] bg-secondary-extralight cursor-pointer p-2 drop-shadow-md font-sans font-light text-md"
+                className=" min-w-[90px] w-[30%] hover:shadow-xl bg-secondary-extralight cursor-pointer p-2 drop-shadow-md font-sans font-light text-md"
               >
                 Select Image
               </label>
@@ -545,8 +546,19 @@ export default function CreateListing() {
                 type="file"
               />
               {imageSrc && (
-                <div className="truncate font-sans font-light text-xs">
-                  {imageName}
+                <div className="flex gap-2 items-center justify-center">
+                  <div className="truncate font-sans font-light text-xs">
+                    {imageName}
+                  </div>
+                  {imageSrc && (
+                    <MdDeleteOutline
+                      onClick={() => {
+                        setImageName("");
+                        setImageSrc(undefined);
+                      }}
+                      className="cursor-pointer"
+                    />
+                  )}
                 </div>
               )}
             </div>
