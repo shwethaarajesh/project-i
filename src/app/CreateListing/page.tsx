@@ -28,6 +28,8 @@ export default function CreateListing() {
   const [description, setDescription] = useState("");
   const [ageLimit, setAgeLimit] = useState("");
   const [gender, setGender] = useState("");
+  const [eventDate, setEventDate] = useState("");
+  const [eventTime, setEventTime] = useState("");
   const [socialMediaLinks, setSocialMediaLinks] = useState([""]);
   const [allLocations, setAllLocations] = useState<ILocation[]>([]);
   const [allCities, setAllCities] = useState<string[]>([]);
@@ -44,6 +46,10 @@ export default function CreateListing() {
   const [isDescriptionError, setIsDescriptionError] = useState(false);
   const [isGenderError, setIsGenderError] = useState(false);
   const [isAgeError, setIsAgeError] = useState(false);
+  const [isEventDateError, setIsEventDateError] = useState(false);
+  const [isEventTimeError, setIsEventTimeError] = useState(false);
+  const [imageSrc, setImageSrc] = useState<string>();
+  const [imageName, setImageName] = useState<string>("");
 
   const onChangeEventName = (event: ChangeEvent<HTMLInputElement>) => {
     setIsEventNameError(false);
@@ -70,6 +76,15 @@ export default function CreateListing() {
   const onChangeEnrollBy = (event: ChangeEvent<HTMLInputElement>) => {
     setIsEnrollByError(false);
     setEntrollBy(event.target.value);
+  };
+
+  const onChangeEventDate = (event: ChangeEvent<HTMLInputElement>) => {
+    setIsEventDateError(false);
+    setEventDate(event.target.value);
+  };
+  const onChangeEventTime = (event: ChangeEvent<HTMLInputElement>) => {
+    setIsEventTimeError(false);
+    setEventTime(event.target.value);
   };
 
   const onChangeDescription = (event: ChangeEvent<HTMLInputElement>) => {
@@ -131,6 +146,18 @@ export default function CreateListing() {
     setSocialMediaLinks(updatedLinks);
   };
 
+  const handleImageChange = (e: any) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      setImageName(e.target.files[0].name);
+      reader.onloadend = () => {
+        if (typeof reader.result === "string") setImageSrc(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const onSubmit = () => {
     const age = parseInt(ageLimit);
     let errorState = false;
@@ -179,6 +206,14 @@ export default function CreateListing() {
       setIsGenderError(true);
       errorState = true;
     }
+    if (!eventTime) {
+      setIsEventTimeError(true);
+      errorState = true;
+    }
+    if (!eventDate) {
+      setIsEventDateError(true);
+      errorState = true;
+    }
     if (errorState) {
       return;
     }
@@ -193,6 +228,7 @@ export default function CreateListing() {
       ageLimit: ageLimit,
       preferredGender: gender,
       socialMediaLinks: socialMediaLinks,
+      eventImage: imageSrc,
     };
     console.log("Submitted", eventJson);
     router.push("/Home");
@@ -362,7 +398,37 @@ export default function CreateListing() {
               )}
             </div>
           </div>
-
+          <div className="grid grid-cols-2 gap-5">
+            <div>
+              {" "}
+              <FormComponent
+                header={"Event Date (Date)"}
+                stateName={eventDate}
+                onChangeEventName={onChangeEventDate}
+                useCalendar={true}
+                onFocus={() => setIsFocused(false)}
+              ></FormComponent>
+              {isEventDateError && (
+                <div className=" mt-2 font-sans font-light text-xs text-red-500">
+                  Required
+                </div>
+              )}
+            </div>
+            <div>
+              <FormComponent
+                header={"Event Time"}
+                stateName={eventTime}
+                onChangeEventName={onChangeEventTime}
+                useTime={true}
+                onFocus={() => setIsFocused(false)}
+              ></FormComponent>
+              {isEventTimeError && (
+                <div className=" mt-2 font-sans font-light text-xs text-red-500">
+                  Required
+                </div>
+              )}
+            </div>
+          </div>
           <div>
             {" "}
             <FormComponent
@@ -460,7 +526,44 @@ export default function CreateListing() {
               );
             })}
           </div>
-
+          <div>
+            <div className="font-sans font-light text-xs mb-4">
+              {"Event image (Optional)"}
+            </div>
+            <div className="flex gap-4  items-center">
+              <label
+                htmlFor="files"
+                className=" min-w-[90px] w-[30%] bg-secondary-extralight cursor-pointer p-2 drop-shadow-md font-sans font-light text-md"
+              >
+                Select Image
+              </label>
+              <input
+                id="files"
+                accept="image/*"
+                onChange={handleImageChange}
+                className="invisible w-0"
+                type="file"
+              />
+              {imageSrc && (
+                <div className="truncate font-sans font-light text-xs">
+                  {imageName}
+                </div>
+              )}
+            </div>
+          </div>
+          {/* <input
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+            className="mb-4 bg-secondary-extralight p-2 drop-shadow-md font-sans font-light text-md"
+          /> */}
+          {imageSrc && (
+            <img
+              src={imageSrc}
+              alt="Uploaded Preview"
+              className="w-64 h-64 object-cover"
+            />
+          )}
           <Button
             onClick={() => {
               console.log("hi");

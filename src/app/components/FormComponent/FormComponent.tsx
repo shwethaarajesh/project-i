@@ -10,24 +10,36 @@ export default function FormComponent(inputValues: {
   onBlur?: any;
   useInput?: true;
   useTextArea?: boolean;
+  useTime?: boolean;
   useCalendar?: boolean;
 }) {
   return (
     <div className="flex flex-col gap-2 w-full">
       <div className="font-sans font-light text-xs">{inputValues.header}</div>
-      {!inputValues.useTextArea && !inputValues.useCalendar && (
-        <input
-          className="bg-secondary-extralight p-2 drop-shadow-md font-sans font-light text-md"
-          type="text"
-          value={inputValues.stateName}
-          onFocus={inputValues.onFocus}
-          onBlur={inputValues.onBlur}
-          onChange={inputValues.onChangeEventName}
-        />
-      )}
+      {!inputValues.useTextArea &&
+        !inputValues.useCalendar &&
+        !inputValues.useTime && (
+          <input
+            className="bg-secondary-extralight p-2 drop-shadow-md font-sans font-light text-md"
+            type="text"
+            value={inputValues.stateName}
+            onFocus={inputValues.onFocus}
+            onBlur={inputValues.onBlur}
+            onChange={inputValues.onChangeEventName}
+          />
+        )}
       {inputValues.useCalendar && (
         <input
           type="date"
+          onFocus={inputValues.onFocus}
+          onBlur={inputValues.onBlur}
+          onChange={inputValues.onChangeEventName}
+          className="bg-secondary-extralight p-2 drop-shadow-md font-sans font-light text-md"
+        ></input>
+      )}
+      {inputValues.useTime && (
+        <input
+          type="time"
           onFocus={inputValues.onFocus}
           onBlur={inputValues.onBlur}
           onChange={inputValues.onChangeEventName}
