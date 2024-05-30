@@ -13,7 +13,7 @@ export default function FormComponent(inputValues: {
   useCalendar?: boolean;
 }) {
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 w-full">
       <div className="font-sans font-light text-xs">{inputValues.header}</div>
       {!inputValues.useTextArea && !inputValues.useCalendar && (
         <input

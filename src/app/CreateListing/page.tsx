@@ -31,47 +31,62 @@ export default function CreateListing() {
   const [allCountries, setAllCountries] = useState<string[]>([]);
   const [country, setCountry] = useState("");
   const [city, setCity] = useState("");
+  const [isEventNameError, setIsEventNameError] = useState(false);
+  const [isGenreError, setIsGenreError] = useState(false);
+  const [isNoPeopleError, setIsNoPeopleError] = useState(false);
+  const [isCountryError, setIsCountryError] = useState(false);
+  const [isCityError, setIsCityError] = useState(false);
+  const [isEventTypeError, setIsEventTypeError] = useState(false);
+  const [isEnrollByError, setIsEnrollByError] = useState(false);
+  const [isDescriptionError, setIsDescriptionError] = useState(false);
+  const [isGenderError, setIsGenderError] = useState(false);
+  const [isAgeError, setIsAgeError] = useState(false);
 
   const onChangeEventName = (event: ChangeEvent<HTMLInputElement>) => {
+    setIsEventNameError(false);
     setEventName(event.target.value);
   };
 
   const onChangeGenre = (event: ChangeEvent<HTMLInputElement>) => {
+    setIsGenreError(false);
     setGenre(event.target.value);
   };
 
   const onChangenNoOfPeople = (event: ChangeEvent<HTMLInputElement>) => {
-    setNoOfPeople(event.target.value);
-  };
-
-  const onChangeLocation = (event: ChangeEvent<HTMLInputElement>) => {
-    setLocation(event.target.value);
+    if (/^\d*$/.test(event.target.value)) {
+      setIsNoPeopleError(false);
+      setNoOfPeople(event.target.value);
+    }
   };
 
   const onChangenEventType = (event: ChangeEvent<HTMLInputElement>) => {
+    setIsEventTypeError(false);
     setEventType(event.target.value);
   };
 
   const onChangeEnrollBy = (event: ChangeEvent<HTMLInputElement>) => {
+    setIsEnrollByError(false);
     setEntrollBy(event.target.value);
   };
 
   const onChangeDescription = (event: ChangeEvent<HTMLInputElement>) => {
+    setIsDescriptionError(false);
     setDescription(event.target.value);
   };
 
   const onChangeAge = (event: ChangeEvent<HTMLInputElement>) => {
     if (/^\d*$/.test(event.target.value)) {
       setIsAgeLimitBroken(false);
+      setIsAgeError(false);
       setAgeLimit(event.target.value);
     }
   };
 
   const onChangeCountry = (event: ChangeEvent<HTMLInputElement>) => {
+    setIsCountryError(false);
     const countryDetails = allLocations.find(
       (eachCountry) => eachCountry.country == event.target.value
     );
-    console.log(countryDetails);
     if (countryDetails?.cities) {
       setAllCities(countryDetails?.cities);
     }
@@ -79,11 +94,13 @@ export default function CreateListing() {
   };
 
   const onChangeCity = (event: ChangeEvent<HTMLInputElement>) => {
+    setIsCityError(false);
     setCity(event.target.value);
     setLocation(country + "," + event.target.value);
   };
 
   const onChangeGender = (event: ChangeEvent<HTMLInputElement>) => {
+    setIsGenderError(false);
     setGender(event.target.value);
   };
 
@@ -115,7 +132,50 @@ export default function CreateListing() {
     const age = parseInt(ageLimit);
     if (age < 16 || age > 70) {
       setIsAgeLimitBroken(true);
+      return;
     }
+    if (!ageLimit) {
+      setIsAgeError(true);
+      return;
+    }
+    if (!eventName) {
+      setIsEventNameError(true);
+      return;
+    }
+    if (!genre) {
+      setIsGenreError(true);
+      return;
+    }
+    if (!noOfPeople) {
+      setIsNoPeopleError(true);
+      return;
+    }
+    if (!country) {
+      setIsCountryError(true);
+      return;
+    }
+    if (!city) {
+      setIsCityError(true);
+      return;
+    }
+    if (!eventType) {
+      setIsEventTypeError(true);
+      return;
+    }
+
+    if (!enrollBy) {
+      setIsEnrollByError(true);
+      return;
+    }
+    if (!description) {
+      setIsDescriptionError(true);
+      return;
+    }
+    if (!gender) {
+      setIsGenderError(true);
+      return;
+    }
+
     const eventJson = {
       eventName: eventName,
       eventGenre: genre,
@@ -158,18 +218,32 @@ export default function CreateListing() {
       </div>
       <div className="m-6 p-8 border-[3px] border-primary-light border-solid ">
         <div className="flex flex-col gap-6">
-          <FormComponent
-            header={"Event Name"}
-            stateName={eventName}
-            onChangeEventName={onChangeEventName}
-            onFocus={() => setIsFocused(false)}
-          ></FormComponent>
-          <FormComponent
-            header={"Genre of event"}
-            stateName={genre}
-            onChangeEventName={onChangeGenre}
-            onFocus={() => setIsFocused(true)}
-          ></FormComponent>
+          <div>
+            <FormComponent
+              header={"Event Name"}
+              stateName={eventName}
+              onChangeEventName={onChangeEventName}
+              onFocus={() => setIsFocused(false)}
+            ></FormComponent>
+            {isEventNameError && (
+              <div className=" mt-2 font-sans font-light text-xs text-red-500">
+                Required
+              </div>
+            )}
+          </div>
+          <div>
+            <FormComponent
+              header={"Genre of event"}
+              stateName={genre}
+              onChangeEventName={onChangeGenre}
+              onFocus={() => setIsFocused(true)}
+            ></FormComponent>
+            {isGenreError && (
+              <div className=" mt-2 font-sans font-light text-xs text-red-500">
+                Required
+              </div>
+            )}
+          </div>
           {isFocused && (
             <div>
               <div className="font-sans font-light text-xs italic mb-3">
@@ -185,7 +259,10 @@ export default function CreateListing() {
                           ? "bg-secondary-light"
                           : "bg-secondary-extralight shadow-sm"
                       }`}
-                      onClick={() => setGenre(eachgenre)}
+                      onClick={() => {
+                        setGenre(eachgenre);
+                        setIsGenreError(false);
+                      }}
                     >
                       {eachgenre}
                     </div>
@@ -195,61 +272,105 @@ export default function CreateListing() {
             </div>
           )}
           <div className="grid grid-cols-2 gap-5">
-            <FormComponent
-              header={"Number of people needed"}
-              stateName={noOfPeople}
-              onChangeEventName={onChangenNoOfPeople}
-              onFocus={() => setIsFocused(false)}
-            ></FormComponent>
-            <div className="flex gap-4">
-              <FormDropdown
-                header={"Country"}
-                stateName={country}
-                className={"w-full"}
-                onChangeEvent={onChangeCountry}
+            <div>
+              <FormComponent
+                header={"Number of people needed"}
+                stateName={noOfPeople}
+                onChangeEventName={onChangenNoOfPeople}
                 onFocus={() => setIsFocused(false)}
-                selectedOption={country}
-                options={allCountries}
-              ></FormDropdown>
-              {country && (
+              ></FormComponent>
+              {isNoPeopleError && (
+                <div className=" mt-2 font-sans font-light text-xs text-red-500">
+                  Required
+                </div>
+              )}
+            </div>
+            <div className="flex gap-4">
+              <div>
                 <FormDropdown
-                  header={"City"}
-                  stateName={city}
+                  header={"Country"}
+                  stateName={country}
                   className={"w-full"}
-                  onChangeEvent={onChangeCity}
+                  onChangeEvent={onChangeCountry}
                   onFocus={() => setIsFocused(false)}
-                  selectedOption={city}
-                  options={allCities}
+                  selectedOption={country}
+                  options={allCountries}
                 ></FormDropdown>
+                {isCountryError && (
+                  <div className=" mt-2 font-sans font-light text-xs text-red-500">
+                    Required
+                  </div>
+                )}
+              </div>
+              {country && (
+                <div>
+                  <FormDropdown
+                    header={"City"}
+                    stateName={city}
+                    className={"w-full"}
+                    onChangeEvent={onChangeCity}
+                    onFocus={() => setIsFocused(false)}
+                    selectedOption={city}
+                    options={allCities}
+                  ></FormDropdown>
+                  {isCityError && (
+                    <div className=" mt-2 font-sans font-light text-xs text-red-500">
+                      Required
+                    </div>
+                  )}
+                </div>
               )}
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-5">
-            <FormDropdown
-              header={"Event type"}
-              stateName={eventType}
-              onChangeEvent={onChangenEventType}
-              options={eventTypes}
-              selectedOption={eventType}
-              onFocus={() => setIsFocused(false)}
-            ></FormDropdown>
-            <FormComponent
-              header={"Enroll by (Date)"}
-              stateName={enrollBy}
-              onChangeEventName={onChangeEnrollBy}
-              useCalendar={true}
-              onFocus={() => setIsFocused(false)}
-            ></FormComponent>
+            <div>
+              {" "}
+              <FormDropdown
+                header={"Event type"}
+                stateName={eventType}
+                onChangeEvent={onChangenEventType}
+                options={eventTypes}
+                selectedOption={eventType}
+                onFocus={() => setIsFocused(false)}
+              ></FormDropdown>
+              {isEventTypeError && (
+                <div className=" mt-2 font-sans font-light text-xs text-red-500">
+                  Required
+                </div>
+              )}
+            </div>
+            <div>
+              <FormComponent
+                header={"Enroll by (Date)"}
+                stateName={enrollBy}
+                onChangeEventName={onChangeEnrollBy}
+                useCalendar={true}
+                onFocus={() => setIsFocused(false)}
+              ></FormComponent>
+              {isEnrollByError && (
+                <div className=" mt-2 font-sans font-light text-xs text-red-500">
+                  Required
+                </div>
+              )}
+            </div>
           </div>
 
-          <FormComponent
-            header={"Description"}
-            stateName={description}
-            onChangeEventName={onChangeDescription}
-            onFocus={() => setIsFocused(false)}
-            useTextArea={true}
-          ></FormComponent>
+          <div>
+            {" "}
+            <FormComponent
+              header={"Description"}
+              stateName={description}
+              onChangeEventName={onChangeDescription}
+              onFocus={() => setIsFocused(false)}
+              useTextArea={true}
+            ></FormComponent>
+            {isDescriptionError && (
+              <div className=" mt-2 font-sans font-light text-xs text-red-500">
+                Required
+              </div>
+            )}
+          </div>
 
           <div className="grid grid-cols-2 gap-5">
             <div>
@@ -264,20 +385,32 @@ export default function CreateListing() {
                   Age can be between 16 - 70 only{" "}
                 </div>
               )}
+              {isAgeError && (
+                <div className=" mt-2 font-sans font-light text-xs text-red-500">
+                  Required
+                </div>
+              )}
             </div>
-            <FormDropdown
-              header={"Preferred gender"}
-              stateName={gender}
-              onChangeEvent={onChangeGender}
-              options={preferredGenders}
-              selectedOption={gender}
-              onFocus={() => setIsFocused(false)}
-            ></FormDropdown>
+            <div>
+              <FormDropdown
+                header={"Preferred gender"}
+                stateName={gender}
+                onChangeEvent={onChangeGender}
+                options={preferredGenders}
+                selectedOption={gender}
+                onFocus={() => setIsFocused(false)}
+              ></FormDropdown>
+              {isGenderError && (
+                <div className=" mt-2 font-sans font-light text-xs text-red-500">
+                  Required{" "}
+                </div>
+              )}
+            </div>
           </div>
 
           <div className="flex flex-col gap-4">
             <div className="font-sans font-light text-xs">
-              {"Social media links (Max:3)"}
+              {"Social media links (Max:3) (Optional)"}
             </div>
             {socialMediaLinks.map((eachLink, index) => {
               return (
@@ -319,12 +452,6 @@ export default function CreateListing() {
                 </div>
               );
             })}
-
-            {/* {isNoOfLinksMore && (
-              <div className=" mt-3 font-sans font-light text-xs text-red-400">
-                {"Cannot have more than 3 links"}
-              </div>
-            )} */}
           </div>
 
           <Button
