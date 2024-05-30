@@ -5,11 +5,13 @@ import Header from "../components/Header/Header";
 import { ChangeEvent, useState } from "react";
 import { IoMdAdd } from "react-icons/io";
 import { FiMinus } from "react-icons/fi";
+import FormDropdown from "../components/FormDropdown/FormDropdown";
 
 export default function CreateListing() {
   const [eventName, setEventName] = useState("");
   const [genre, setGenre] = useState("");
   const [isFocused, setIsFocused] = useState(false);
+  const [isAgeLimitBroken, setIsAgeLimitBroken] = useState(false);
   const [noOfPeople, setNoOfPeople] = useState("");
   const [location, setLocation] = useState("");
   const [eventType, setEventType] = useState("");
@@ -48,7 +50,10 @@ export default function CreateListing() {
   };
 
   const onChangeAge = (event: ChangeEvent<HTMLInputElement>) => {
-    setAgeLimit(event.target.value);
+    if (/^\d*$/.test(event.target.value)) {
+      setIsAgeLimitBroken(false);
+      setAgeLimit(event.target.value);
+    }
   };
 
   const onChangeGender = (event: ChangeEvent<HTMLInputElement>) => {
@@ -80,6 +85,10 @@ export default function CreateListing() {
   };
 
   const onSubmit = () => {
+    const age = parseInt(ageLimit);
+    if (age < 16 || age > 70) {
+      setIsAgeLimitBroken(true);
+    }
     const eventJson = {
       eventName: eventName,
       eventGenre: genre,
@@ -95,7 +104,9 @@ export default function CreateListing() {
     console.log("Submitted", eventJson);
   };
 
+  const eventTypes = ["Outdoors", "Indoors", "Online"];
   const commonGenres = ["Movie", "Picnic", "Shopping", "Concert"];
+  const preferredGenders = ["Male", "Female", "Transgender", "Any"];
   return (
     <div className="">
       <div className="bg-primary-light p-4">
@@ -155,12 +166,14 @@ export default function CreateListing() {
           </div>
 
           <div className="grid grid-cols-2 gap-5">
-            <FormComponent
+            <FormDropdown
               header={"Event type"}
               stateName={eventType}
-              onChangeEventName={onChangenEventType}
+              onChangeEvent={onChangenEventType}
+              options={eventTypes}
+              selectedOption={eventType}
               onFocus={() => setIsFocused(false)}
-            ></FormComponent>
+            ></FormDropdown>
             <FormComponent
               header={"Enroll by (Date)"}
               stateName={enrollBy}
@@ -179,18 +192,27 @@ export default function CreateListing() {
           ></FormComponent>
 
           <div className="grid grid-cols-2 gap-5">
-            <FormComponent
-              header={"Age limit"}
-              stateName={ageLimit}
-              onChangeEventName={onChangeAge}
-              onFocus={() => setIsFocused(false)}
-            ></FormComponent>
-            <FormComponent
+            <div>
+              <FormComponent
+                header={"Age limit (Between 16-70)"}
+                stateName={ageLimit}
+                onChangeEventName={onChangeAge}
+                onFocus={() => setIsFocused(false)}
+              ></FormComponent>
+              {isAgeLimitBroken && (
+                <div className=" mt-2 font-sans font-light text-xs text-red-500">
+                  Age can be between 16 - 70 only{" "}
+                </div>
+              )}
+            </div>
+            <FormDropdown
               header={"Preferred gender"}
               stateName={gender}
-              onChangeEventName={onChangeGender}
+              onChangeEvent={onChangeGender}
+              options={preferredGenders}
+              selectedOption={gender}
               onFocus={() => setIsFocused(false)}
-            ></FormComponent>
+            ></FormDropdown>
           </div>
 
           <div className="flex flex-col gap-4">

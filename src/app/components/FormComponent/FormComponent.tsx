@@ -31,7 +31,7 @@ export default function FormComponent(inputValues: {
           onFocus={inputValues.onFocus}
           onBlur={inputValues.onBlur}
           onChange={inputValues.onChangeEventName}
-          className="bg-secondary-extralight px-2 py-3 drop-shadow-md font-sans font-light text-xs"
+          className="bg-secondary-extralight p-2 drop-shadow-md font-sans font-light text-md"
         ></input>
       )}
       {inputValues.useTextArea && (
