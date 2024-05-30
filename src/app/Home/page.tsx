@@ -1,22 +1,24 @@
-import Image from "next/image";
-import { GoHome } from "react-icons/go";
-import { CgProfile } from "react-icons/cg";
-import { IoMdArrowDropdown } from "react-icons/io";
+"use client";
+
+import { useRouter } from "next/navigation";
 import FeaturedListings from "../components/FeaturedListings/FeaturedListings";
 import Button from "../components/Button/Button";
 import Link from "next/link";
 import Header from "../components/Header/Header";
 
 export default function HomePage() {
+  const router = useRouter();
   return (
     <div className=" ">
       <div className=" p-4 h-[200px] bg-primary-light  ">
         <Header></Header>
         <div className="flex gap-4 mt-8 flex-col justify-center items-center">
           <div className="font-sans font-light text-xs">Title image bg</div>
-          <Link href={"/CreateListing"}>
-            <Button text={"Get Started"}></Button>
-          </Link>
+
+          <Button
+            onClick={() => router.push("/CreateListing")}
+            text={"Get Started"}
+          ></Button>
         </div>
       </div>
       <div className="m-6">

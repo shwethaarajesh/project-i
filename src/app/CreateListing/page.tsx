@@ -1,5 +1,6 @@
 "use client";
 import Button from "../components/Button/Button";
+import { useRouter } from "next/navigation";
 import FormComponent from "../components/FormComponent/FormComponent";
 import Header from "../components/Header/Header";
 import { ChangeEvent, useEffect, useState } from "react";
@@ -14,6 +15,8 @@ interface ILocation {
   iso3: string;
 }
 export default function CreateListing() {
+  const router = useRouter();
+
   const [eventName, setEventName] = useState("");
   const [genre, setGenre] = useState("");
   const [isFocused, setIsFocused] = useState(false);
@@ -130,52 +133,55 @@ export default function CreateListing() {
 
   const onSubmit = () => {
     const age = parseInt(ageLimit);
+    let errorState = false;
     if (age < 16 || age > 70) {
       setIsAgeLimitBroken(true);
-      return;
+      errorState = true;
     }
     if (!ageLimit) {
       setIsAgeError(true);
-      return;
+      errorState = true;
     }
     if (!eventName) {
       setIsEventNameError(true);
-      return;
+      errorState = true;
     }
     if (!genre) {
       setIsGenreError(true);
-      return;
+      errorState = true;
     }
     if (!noOfPeople) {
       setIsNoPeopleError(true);
-      return;
+      errorState = true;
     }
     if (!country) {
       setIsCountryError(true);
-      return;
+      errorState = true;
     }
     if (!city) {
       setIsCityError(true);
-      return;
+      errorState = true;
     }
     if (!eventType) {
       setIsEventTypeError(true);
-      return;
+      errorState = true;
     }
 
     if (!enrollBy) {
       setIsEnrollByError(true);
-      return;
+      errorState = true;
     }
     if (!description) {
       setIsDescriptionError(true);
-      return;
+      errorState = true;
     }
     if (!gender) {
       setIsGenderError(true);
+      errorState = true;
+    }
+    if (errorState) {
       return;
     }
-
     const eventJson = {
       eventName: eventName,
       eventGenre: genre,
@@ -189,6 +195,7 @@ export default function CreateListing() {
       socialMediaLinks: socialMediaLinks,
     };
     console.log("Submitted", eventJson);
+    router.push("/Home");
   };
 
   const getLocations = async () => {
