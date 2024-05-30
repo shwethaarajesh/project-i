@@ -165,6 +165,7 @@ export default function CreateListing() {
               header={"Enroll by (Date)"}
               stateName={enrollBy}
               onChangeEventName={onChangeEnrollBy}
+              useCalendar={true}
               onFocus={() => setIsFocused(false)}
             ></FormComponent>
           </div>
