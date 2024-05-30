@@ -7,13 +7,20 @@ export default function FormDropdown(inputValues: {
   header: string;
   stateName: string;
   onChangeEvent: any;
+  className?: string;
   selectedOption: string;
   options: string[];
   onFocus?: any;
   onBlur?: any;
 }) {
   return (
-    <div className="flex flex-col gap-2">
+    <div
+      className={
+        inputValues.className
+          ? inputValues.className
+          : "" + "flex flex-col gap-2"
+      }
+    >
       <div className="font-sans font-light text-xs">{inputValues.header}</div>
       <div>
         <div className="relative inline-block w-full">

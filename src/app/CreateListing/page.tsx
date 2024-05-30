@@ -2,11 +2,17 @@
 import Button from "../components/Button/Button";
 import FormComponent from "../components/FormComponent/FormComponent";
 import Header from "../components/Header/Header";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { IoMdAdd } from "react-icons/io";
 import { FiMinus } from "react-icons/fi";
 import FormDropdown from "../components/FormDropdown/FormDropdown";
 
+interface ILocation {
+  cities: string[];
+  country: string;
+  iso2: string;
+  iso3: string;
+}
 export default function CreateListing() {
   const [eventName, setEventName] = useState("");
   const [genre, setGenre] = useState("");
@@ -20,6 +26,11 @@ export default function CreateListing() {
   const [ageLimit, setAgeLimit] = useState("");
   const [gender, setGender] = useState("");
   const [socialMediaLinks, setSocialMediaLinks] = useState([""]);
+  const [allLocations, setAllLocations] = useState<ILocation[]>([]);
+  const [allCities, setAllCities] = useState<string[]>([]);
+  const [allCountries, setAllCountries] = useState<string[]>([]);
+  const [country, setCountry] = useState("");
+  const [city, setCity] = useState("");
 
   const onChangeEventName = (event: ChangeEvent<HTMLInputElement>) => {
     setEventName(event.target.value);
@@ -54,6 +65,22 @@ export default function CreateListing() {
       setIsAgeLimitBroken(false);
       setAgeLimit(event.target.value);
     }
+  };
+
+  const onChangeCountry = (event: ChangeEvent<HTMLInputElement>) => {
+    const countryDetails = allLocations.find(
+      (eachCountry) => eachCountry.country == event.target.value
+    );
+    console.log(countryDetails);
+    if (countryDetails?.cities) {
+      setAllCities(countryDetails?.cities);
+    }
+    setCountry(event.target.value);
+  };
+
+  const onChangeCity = (event: ChangeEvent<HTMLInputElement>) => {
+    setCity(event.target.value);
+    setLocation(country + "," + event.target.value);
   };
 
   const onChangeGender = (event: ChangeEvent<HTMLInputElement>) => {
@@ -104,9 +131,26 @@ export default function CreateListing() {
     console.log("Submitted", eventJson);
   };
 
+  const getLocations = async () => {
+    const res = await fetch(`https://countriesnow.space/api/v0.1/countries`);
+    return res.json();
+  };
+
   const eventTypes = ["Outdoors", "Indoors", "Online"];
   const commonGenres = ["Movie", "Picnic", "Shopping", "Concert"];
   const preferredGenders = ["Male", "Female", "Transgender", "Any"];
+
+  useEffect(() => {
+    getLocations().then((res) => {
+      console.log("LOCATIONSSS", res);
+      const countryList = res.data.map((eachCountry: any) => {
+        return eachCountry.country;
+      });
+      setAllCountries(countryList);
+      setAllLocations(res.data);
+    });
+  }, []);
+
   return (
     <div className="">
       <div className="bg-primary-light p-4">
@@ -157,12 +201,28 @@ export default function CreateListing() {
               onChangeEventName={onChangenNoOfPeople}
               onFocus={() => setIsFocused(false)}
             ></FormComponent>
-            <FormComponent
-              header={"Location"}
-              stateName={location}
-              onChangeEventName={onChangeLocation}
-              onFocus={() => setIsFocused(false)}
-            ></FormComponent>
+            <div className="flex gap-4">
+              <FormDropdown
+                header={"Country"}
+                stateName={country}
+                className={"w-full"}
+                onChangeEvent={onChangeCountry}
+                onFocus={() => setIsFocused(false)}
+                selectedOption={country}
+                options={allCountries}
+              ></FormDropdown>
+              {country && (
+                <FormDropdown
+                  header={"City"}
+                  stateName={city}
+                  className={"w-full"}
+                  onChangeEvent={onChangeCity}
+                  onFocus={() => setIsFocused(false)}
+                  selectedOption={city}
+                  options={allCities}
+                ></FormDropdown>
+              )}
+            </div>
           </div>
 
           <div className="grid grid-cols-2 gap-5">
