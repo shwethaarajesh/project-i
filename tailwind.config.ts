@@ -15,9 +15,11 @@ const config: Config = {
       },
       colors:{
         "primary-light":"#FBEDE0",
+        "primary-text":"#A69484",
         "secondary-light":"#FDD1D2",
         "secondary-extralight":"#FBF5F5",
         "tertiary-light":"#D4BBDD",
+        "tertiary-text":"#A982B7",
         "accent-primary":"#D0AB99",
         "primary-dark":"#aba995",
         "secondary-dark":"#92a3a3",
