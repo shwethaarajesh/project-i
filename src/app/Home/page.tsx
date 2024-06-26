@@ -3,7 +3,6 @@
 import { useRouter } from "next/navigation";
 import FeaturedListings from "../components/FeaturedListings/FeaturedListings";
 import Button from "../components/Button/Button";
-import Link from "next/link";
 import Header from "../components/Header/Header";
 
 export default function HomePage() {

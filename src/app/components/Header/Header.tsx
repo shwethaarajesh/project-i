@@ -15,16 +15,21 @@ export default function Header() {
       >
         <GoHome size={20} />
       </button>
-      <div
-        className=" flex gap-4 col-span-10 justify-center text-sm"
-        onClick={() => {
-          router.push("/CreateListing");
-        }}
-      >
-        <div className="p-3 hover:cursor-pointer border-b-2 border-transparent hover:border-secondary-light">
+      <div className=" flex gap-4 col-span-10 justify-center text-sm">
+        <div
+          className="p-3 hover:cursor-pointer border-b-2 border-transparent hover:border-secondary-light"
+          onClick={() => {
+            router.push("/CreateListing");
+          }}
+        >
           Create Event
         </div>
-        <div className="p-3 hover:cursor-pointer border-b-2 border-transparent hover:border-secondary-light">
+        <div
+          className="p-3 hover:cursor-pointer border-b-2 border-transparent hover:border-secondary-light"
+          onClick={() => {
+            router.push("/ViewListing");
+          }}
+        >
           View Events
         </div>
       </div>
