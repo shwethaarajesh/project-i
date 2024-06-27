@@ -24,7 +24,7 @@ export default function EventListingPage() {
     enrollCount: 2,
     eventType: "Outdoors",
     ageLimit: 30,
-    preferredGender: "any",
+    preferredGender: "Any",
     socialMediaLinks: [
       "https://react-icons.github.io/react-icons/search/#q=bschevronri",
       "https://react-icons.github.io/react-icons/search/#q=bschevronri",
@@ -109,7 +109,7 @@ export default function EventListingPage() {
             <div className="text-secondary-text">{eventDetails.eventType}</div>
           </div>
           <div className="flex gap-2">
-            <div>{"Preffered gender : "}</div>
+            <div>{"Preferred gender : "}</div>
             <div className="text-secondary-text">
               {eventDetails.preferredGender}
             </div>
