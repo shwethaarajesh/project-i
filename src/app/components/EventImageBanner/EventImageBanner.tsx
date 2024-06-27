@@ -8,12 +8,14 @@ interface IEventImageBanner {
   noOfPeople: number;
 }
 export default function EventImageBanner(props: IEventImageBanner) {
+  const prefix = process.env.NODE_ENV == "production" ? "project-i/" : "";
+
   return (
     <div className=" relative">
       {" "}
       <Image
         className=" object-cover w-full min-h-[200px]"
-        src={props.imageUrl || "/placeholder1.png"}
+        src={props.imageUrl || prefix + "/placeholder1.png"}
         width={0}
         height={0}
         sizes="100vw"
