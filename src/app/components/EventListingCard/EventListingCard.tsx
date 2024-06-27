@@ -28,20 +28,20 @@ export default function EventListingCard(props: IEventListingCard) {
     router.push("/EventListing");
   };
   return (
-    <div className="shadow-lg p-3 cursor-pointer" onClick={onClickRedirect}>
+    <div className="shadow-lg p-3 cursor-pointer">
       <EventImageBanner
         imageUrl={props.imageUrl}
         location={props.location}
         noOfPeople={props.noOfPeople}
       ></EventImageBanner>
-      <div className="mt-2 grid grid-cols-3 items-center justify-items-center text-primary-text">
-        <div className="font-light text-xs w-full text-center border-r  border-r-black">
+      <div className="mt-2 grid grid-cols-2 gap-y-4 xs:grid-cols-3 items-center justify-items-center text-primary-text">
+        <div className="font-light text-xs w-full text-center  border-r  border-r-black ">
           {props.eventDate}
         </div>
-        <div className="font-light text-xs  w-full text-center  border-r  border-r-black">
+        <div className="font-light text-xs  w-full text-center k xs:border-r  xs:border-r-black">
           {props.eventTime}
         </div>
-        <div className="flex gap-5 items-center justify-center w-full">
+        <div className="hidden col-span-1 xs:flex gap-5 items-center justify-center w-full">
           <BsShare className="cursor-pointer" />
           {isLiked ? (
             <BsHeartFill
@@ -61,13 +61,31 @@ export default function EventListingCard(props: IEventListingCard) {
           {props.genre}
         </div>
       </div>
-      <div className="mt-4 grid grid-cols-12 gap-5 items-center">
-        <div className=" w-full text-sm font-light line-clamp-2 overflow-hidden text-ellipsis col-span-9">
+      <div className="mt-4 pb-4 grid grid-cols-12 grid-rows-2 xs:grid-rows-1 gap-5 items-center">
+        <div className=" w-full text-sm font-light line-clamp-1 xs:line-clamp-2 xl:line-clamp-3 overflow-hidden text-ellipsis col-span-12 xs:col-span-9">
           {props.description}
         </div>
+
+        <div className=" col-span-6 flex mt-2 xs:hidden gap-5 items-center justify-start text-primary-text w-full">
+          <BsShare size={14} className="cursor-pointer" />
+          {isLiked ? (
+            <BsHeartFill
+              size={14}
+              className="cursor-pointer text-secondary-light "
+              onClick={onClickLike}
+            />
+          ) : (
+            <BsHeart
+              size={14}
+              className="cursor-pointer"
+              onClick={onClickLike}
+            />
+          )}
+        </div>
         <div
-          className="col-span-3 items-center justify-center flex gap-2 text-center text-xs text-tertiary-text
+          className="col-span-6 xs:col-span-3 items-center justify-end flex gap-2 cursor-pointers text-center text-xs text-tertiary-text
         "
+          onClick={onClickRedirect}
         >
           <div>See more</div>
           <BsChevronRight />

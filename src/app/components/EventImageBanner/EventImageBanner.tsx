@@ -25,10 +25,13 @@ export default function EventImageBanner(props: IEventImageBanner) {
           <MdLocationPin size={14} className="text-black" />
           <div className=" font-light text-xs ">{props.location}</div>
         </div>
-        <div className="bg-tertiary-light px-3 py-2 gap-1 flex justify-center items-center rounded-full   ">
+        <div className="bg-tertiary-light px-2 py-1 xs:px-3 xs:py-2 gap-1 flex justify-center items-center rounded-full   ">
           <MdOutlinePersonOutline size={16} className="text-sm" />
-          <div className="text-xs  text-white">
+          <div className="hidden xs:block text-xs  text-white">
             {props.noOfPeople + " people"}
+          </div>
+          <div className="block xs:hidden text-xs  text-white">
+            {props.noOfPeople}
           </div>
         </div>
       </div>

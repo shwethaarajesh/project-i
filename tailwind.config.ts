@@ -25,6 +25,9 @@ const config: Config = {
         "secondary-dark":"#92a3a3",
         "tertiary-dark":"#999285"
       },
+      screens: {
+        'xs': '420px',
+      },
       fontFamily:{
         sans: ['Roboto', 'sans-serif'],
       }
