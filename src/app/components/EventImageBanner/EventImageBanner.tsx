@@ -8,7 +8,7 @@ interface IEventImageBanner {
   noOfPeople: number;
 }
 export default function EventImageBanner(props: IEventImageBanner) {
-  const prefix = process.env.NODE_ENV == "production" ? "project-i/" : "";
+  const prefix = process.env.NODE_ENV == "production" ? "" : "";
 
   return (
     <div className=" relative">
