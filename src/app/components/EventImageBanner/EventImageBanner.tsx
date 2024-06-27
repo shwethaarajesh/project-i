@@ -15,7 +15,7 @@ export default function EventImageBanner(props: IEventImageBanner) {
       {" "}
       <Image
         className=" object-cover w-full min-h-[200px]"
-        src={props.imageUrl || prefix + "/placeholder1.png"}
+        src={props.imageUrl || `/${prefix}${"placeholder1.png"}`}
         width={0}
         height={0}
         sizes="100vw"
