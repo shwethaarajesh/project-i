@@ -47,9 +47,9 @@ export default function ViewListing() {
       </div>
       <div className="m-6 p-8 flex flex-col gap-8">
         <div className="grid grid-cols-1 gap-x-4 gap-y-6  lg:grid-cols-2 ">
-          {events.map((eachEvent) => {
+          {events.map((eachEvent, i) => {
             return (
-              <div>
+              <div key={i}>
                 <EventListingCard
                   imageUrl={eachEvent.imageUrl}
                   location={eachEvent.location}
@@ -64,28 +64,6 @@ export default function ViewListing() {
             );
           })}
         </div>
-        {/* <EventListingCard
-          imageUrl={""}
-          location={"India, Coimbatore"}
-          noOfPeople={3}
-          eventDate={"31st May 2024"}
-          eventTime={"8AM to 12PM"}
-          title={"Sample Event 1"}
-          genre={"Movie"}
-          description={
-            "This is a very very long description of the event This is a very very long description of the eventThis is a very very long description of the eventThis is a very very long description of the eventThis is a very very long description of the event"
-          }
-        ></EventListingCard> */}
-        {/* <EventImageBanner
-          imageUrl={""}
-          location={"India, Coimbatore"}
-          noOfPeople={3}
-        ></EventImageBanner> */}
-        {/* <EventImageBanner
-          imageUrl={""}
-          location={"India, Coimbatore"}
-          noOfPeople={3}
-        ></EventImageBanner> */}
       </div>
     </div>
   );

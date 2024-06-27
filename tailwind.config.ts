@@ -17,6 +17,7 @@ const config: Config = {
         "primary-light":"#FBEDE0",
         "primary-text":"#A69484",
         "secondary-light":"#FDD1D2",
+        "secondary-text":"#A45759",
         "secondary-extralight":"#FBF5F5",
         "tertiary-light":"#D4BBDD",
         "tertiary-text":"#A982B7",
