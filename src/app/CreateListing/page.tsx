@@ -257,9 +257,7 @@ export default function CreateListing() {
 
   return (
     <div className="">
-      <div className="bg-primary-light p-4">
-        <Header></Header>
-      </div>
+      <Header></Header>
       <div className="m-6 p-8 border-[3px] border-primary-light border-solid ">
         <div className="flex flex-col gap-6">
           <div>

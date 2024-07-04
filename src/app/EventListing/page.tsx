@@ -45,9 +45,7 @@ export default function EventListingPage() {
   };
   return (
     <div>
-      <div className="bg-primary-light p-4">
-        <Header></Header>
-      </div>
+      <Header></Header>
       <div className=" p-3 m-1 xs:p-4 xs:m-3 sm:m-6 sm:p-8">
         <div className="bg-primary-light p-3">
           <EventImageBanner

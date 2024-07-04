@@ -9,7 +9,7 @@ export default function HomePage() {
   const router = useRouter();
   return (
     <div className=" ">
-      <div className=" p-4 h-[200px] bg-primary-light  ">
+      <div className=" min-h-[200px] pb-4 bg-primary-light  ">
         <Header></Header>
         <div className="flex gap-4 mt-8 flex-col justify-center items-center">
           <div className="font-sans font-light text-xs">Title image bg</div>
