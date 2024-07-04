@@ -43,7 +43,7 @@ export default function ViewListing() {
   return (
     <div className="">
       <Header></Header>
-      <div className="m-6 p-8 flex flex-col gap-8">
+      <div className="m-6 py-8 px-2 sm:p-8 flex flex-col gap-8">
         <div className="grid grid-cols-1 gap-x-4 gap-y-6  lg:grid-cols-2 ">
           {events.map((eachEvent, i) => {
             return (

@@ -4,12 +4,34 @@ import { GoHome } from "react-icons/go";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { IoIosSearch } from "react-icons/io";
 import { IoIosMenu } from "react-icons/io";
+import { IoIosClose } from "react-icons/io";
+import { BsChevronRight } from "react-icons/bs";
 
 import { useRouter, usePathname } from "next/navigation";
+import { useState } from "react";
 export default function Header() {
   const router = useRouter();
   const pathname = usePathname();
-  console.log(pathname);
+  const [showProfileOptions, setShowProfileOptions] = useState(false);
+  const [showDropdownMenu, setShowDropdownMenu] = useState(false);
+  const profileOptions = [
+    "My Profile",
+    "My Events",
+    "Liked Events",
+    "Settings",
+  ];
+  const menuOptions = [
+    { name: "Create New Event", link: "/CreateListing" },
+    { name: "View All Events", link: "/ViewListing" },
+    { name: "View My Events", link: "/Home" },
+  ];
+
+  const onClickMenu = () => {
+    setShowDropdownMenu((prevVal) => !prevVal);
+  };
+  const onClickLink = (linkVal: string) => {
+    router.push(linkVal);
+  };
   return (
     <div>
       <div className="grid bg-primary-light p-4  gap-5 font-sans grid-cols-12 font-light items-center ">
@@ -27,6 +49,7 @@ export default function Header() {
           <IoIosSearch className="col-span-2" />
           <input
             type="text"
+            readOnly
             value={""}
             className=" w-full col-span-10 ring-0 ring-transparent outline-none caret-transparent"
             placeholder="Search for events"
@@ -60,16 +83,63 @@ export default function Header() {
             <div className="hidden lg:block">View Events</div>
           </div>
         </div>
-        <div className="block sm:hidden">
+        <div className="block sm:hidden cursor-pointer" onClick={onClickMenu}>
           <IoIosMenu className="text-gray-600" />
         </div>
-        <button className="flex">
+        <button
+          className="flex"
+          onClick={() => {
+            setShowProfileOptions((prevValue) => !prevValue);
+          }}
+        >
           <CgProfile className=" min-w-[10px] text-gray-600" />
           <IoMdArrowDropdown className=" min-w-[10px] text-primary-text " />
         </button>
       </div>
-      <div></div>
-      {/* <div className="min-h-[60px] bg-white"></div> */}
+      {showProfileOptions && (
+        <div className="min-h-[60px] z-30 py-3 px-6 gap-3 flex flex-col min-w-[100px] lg:min-w-[250px] right-0 mr-2 absolute bg-white shadow-xl ">
+          {profileOptions.map((eachOption, index) => {
+            return (
+              <div
+                className={`font-light text-sm border-0 hover:shadow-2xl  cursor-pointer ${
+                  index < profileOptions.length - 1 && " pb-2 border-b"
+                } border-gray-300`}
+                key={index}
+              >
+                {eachOption}
+              </div>
+            );
+          })}
+        </div>
+      )}
+      {showDropdownMenu && (
+        <div className="h-full z-20 py-3 px-6 flex flex-col w-full  absolute bg-white shadow-xl ">
+          <div
+            className=" w-full cursor-pointer flex items-center justify-end"
+            onClick={onClickMenu}
+          >
+            <IoIosClose size={24} />
+          </div>
+          {menuOptions.map((eachOption, index) => {
+            return (
+              <div
+                className={`font-light  py-6 flex justify-between text-sm border-0 hover:bg-secondary-extralight  cursor-pointer ${
+                  index < profileOptions.length - 1 && " pb-2 border-b"
+                } border-gray-300`}
+                key={index}
+                onClick={() => {
+                  onClickLink(eachOption.link);
+                }}
+              >
+                <div>{eachOption.name}</div>
+                <div className="">
+                  <BsChevronRight />
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }
