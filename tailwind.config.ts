@@ -24,7 +24,8 @@ const config: Config = {
         "accent-primary":"#D0AB99",
         "primary-dark":"#aba995",
         "secondary-dark":"#92a3a3",
-        "tertiary-dark":"#999285"
+        "tertiary-dark":"#999285",
+        "history-purple":"#8438BF"
       },
       screens: {
         'xs': '420px',
