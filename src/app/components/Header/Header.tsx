@@ -22,10 +22,16 @@ export default function Header() {
     "Liked Events",
     "Settings",
   ];
+  const profOptions = [
+    { name: "My Profile", link: "/Home" },
+    { name: "My Events", link: "/MyListings" },
+    { name: "Liked Events", link: "/Home" },
+    { name: "Settings", link: "/Home" },
+  ];
   const menuOptions = [
     { name: "Create New Event", link: "/CreateListing" },
     { name: "View All Events", link: "/ViewListing" },
-    { name: "View My Events", link: "/Home" },
+    { name: "View My Events", link: "/MyListings" },
   ];
 
   const onClickMenu = () => {
@@ -104,15 +110,18 @@ export default function Header() {
       </div>
       {showProfileOptions && (
         <div className="min-h-[60px] z-30 py-3 px-6 gap-3 flex flex-col min-w-[100px] lg:min-w-[250px] right-0 mr-2 absolute bg-white shadow-xl ">
-          {profileOptions.map((eachOption, index) => {
+          {profOptions.map((eachOption, index) => {
             return (
               <div
                 className={`font-light text-sm border-0 hover:shadow-2xl  cursor-pointer ${
-                  index < profileOptions.length - 1 && " pb-2 border-b"
+                  index < profOptions.length - 1 && " pb-2 border-b"
                 } border-gray-300`}
                 key={index}
+                onClick={() => {
+                  onClickLink(eachOption.link);
+                }}
               >
-                {eachOption}
+                {eachOption.name}
               </div>
             );
           })}
