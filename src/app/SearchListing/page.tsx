@@ -4,11 +4,31 @@ import { useSearchParams } from "next/navigation";
 import EventImageBanner from "../components/EventImageBanner/EventImageBanner";
 import EventListingCard from "../components/EventListingCard/EventListingCard";
 import Header from "../components/Header/Header";
+import { Oval, TailSpin } from "react-loader-spinner";
+import { useEffect, useState } from "react";
 
 export default function SearchListing() {
   const searchParams = useSearchParams();
-  const search = searchParams.get("search");
-  const events = [
+  const search = searchParams.get("search") || "";
+
+  interface IEvent {
+    imageUrl: string;
+    location: string;
+    noOfPeople: number;
+    eventDate: string;
+    eventTime: string;
+    title: string;
+    genre: string;
+    description: string;
+  }
+
+  const [searchParameters] = useState([
+    "title",
+    "genre",
+    "description",
+    "eventDate",
+  ]);
+  const events: IEvent[] = [
     {
       imageUrl: "",
       location: "India, Coimbatore",
@@ -43,6 +63,32 @@ export default function SearchListing() {
         "This is a very very long description of the event This is a very very long description of the event This is a very very long description of the eventThis is a very very long description of the eventThis is a very very long description of the event",
     },
   ];
+  const [searchedEvents, setSearchedEvents] = useState<IEvent[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  useEffect(() => {
+    const filteredArray = events.filter((eachEvent) => {
+      return searchParameters.some((newParam) => {
+        const searchStr = search.toLowerCase();
+        const currEvent = eachEvent[newParam as keyof IEvent]
+          .toString()
+          .toLowerCase();
+
+        console.log(
+          search,
+          newParam,
+          eachEvent,
+          currEvent.includes(searchStr),
+          searchStr.includes(currEvent)
+        );
+        return currEvent.includes(searchStr) || searchStr.includes(currEvent);
+      });
+    });
+    console.log(filteredArray);
+    setSearchedEvents(filteredArray.slice());
+
+    setIsLoading(false);
+  }, [search]);
+
   return (
     <div className="">
       <Header></Header>
@@ -50,24 +96,37 @@ export default function SearchListing() {
         <div className="font-light text-lg text-primary-text">
           {'Events matching: "' + search + '"'}
         </div>
-        <div className="grid grid-cols-1 gap-x-4 gap-y-6  lg:grid-cols-2 ">
-          {events.map((eachEvent, i) => {
-            return (
-              <div key={i}>
-                <EventListingCard
-                  imageUrl={eachEvent.imageUrl}
-                  location={eachEvent.location}
-                  noOfPeople={eachEvent.noOfPeople}
-                  eventDate={eachEvent.eventDate}
-                  eventTime={eachEvent.eventTime}
-                  title={eachEvent.title}
-                  genre={eachEvent.genre}
-                  description={eachEvent.description}
-                ></EventListingCard>
-              </div>
-            );
-          })}
-        </div>
+        {isLoading && (
+          <div className="w-full flex justify-center items-center">
+            <TailSpin color="#FDD1D2"></TailSpin>
+          </div>
+        )}
+        {!isLoading && searchedEvents.length > 0 && (
+          <div className="grid grid-cols-1 gap-x-4 gap-y-6  lg:grid-cols-2 ">
+            {searchedEvents.map((eachEvent, i) => {
+              return (
+                <div key={i}>
+                  <EventListingCard
+                    imageUrl={eachEvent.imageUrl}
+                    location={eachEvent.location}
+                    noOfPeople={eachEvent.noOfPeople}
+                    eventDate={eachEvent.eventDate}
+                    eventTime={eachEvent.eventTime}
+                    title={eachEvent.title}
+                    genre={eachEvent.genre}
+                    description={eachEvent.description}
+                  ></EventListingCard>
+                </div>
+              );
+            })}
+          </div>
+        )}
+        {!isLoading && searchedEvents.length == 0 && (
+          <div className="w-full text-2xl font-extralight flex justify-center items-center mt-10 ">
+            {" "}
+            No events found{" "}
+          </div>
+        )}
       </div>
     </div>
   );

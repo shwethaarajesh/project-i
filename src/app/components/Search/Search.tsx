@@ -35,11 +35,12 @@ export default function Search(props: {
       return;
     }
     const newUrl = "/SearchListing?search=" + alNumStr;
-
-    const newHistory = searchHistory.slice();
-    newHistory.push(alNumStr);
-    setSearchHistory(newHistory);
-    localStorage.setItem("searchHistory", newHistory.join("//"));
+    if (!searchHistory.includes(alNumStr)) {
+      const newHistory = searchHistory.slice();
+      newHistory.push(alNumStr);
+      setSearchHistory(newHistory);
+      localStorage.setItem("searchHistory", newHistory.join("//"));
+    }
     router.push(newUrl);
     props.setOnSearch(false);
   };
