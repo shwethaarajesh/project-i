@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { IoIosSearch } from "react-icons/io";
 import { IoIosClose } from "react-icons/io";
 import { MdArrowDropDown } from "react-icons/md";
@@ -21,18 +21,34 @@ export default function Search(props: {
     const index = searchHistory.indexOf(val);
     console.log(val, index);
     if (index > -1) {
-      setSearchHistory((prevValue) => {
-        prevValue.splice(index, 1);
-        console.log(prevValue);
-        return prevValue.slice();
-      });
+      const newVal = searchHistory.slice();
+      newVal.splice(index, 1);
+      localStorage.setItem("searchHistory", newVal.join("//"));
+      setSearchHistory(newVal);
     }
   };
-  const [searchHistory, setSearchHistory] = useState([
-    "Picnic",
-    "Movies",
-    "Shopping",
-  ]);
+  const [searchHistory, setSearchHistory] = useState<string[]>([]);
+
+  const onSearch = (strVal: string) => {
+    const alNumStr = strVal.replace(/[^a-zA-Z0-9 ]/g, "");
+    if (!alNumStr) {
+      return;
+    }
+    const newUrl = "/SearchListing?search=" + alNumStr;
+
+    const newHistory = searchHistory.slice();
+    newHistory.push(alNumStr);
+    setSearchHistory(newHistory);
+    localStorage.setItem("searchHistory", newHistory.join("//"));
+    router.push(newUrl);
+    props.setOnSearch(false);
+  };
+  useEffect(() => {
+    const history = localStorage.getItem("searchHistory")?.split("//");
+    if (history) {
+      setSearchHistory(history);
+    }
+  }, []);
   return (
     <div className="absolute h-full top-0 w-full z-10 bg-white ">
       <div className="bg-primary-light p-4 min-h-[64px] sm:min-h-[78px] px-4 flex items-center justify-center">
@@ -49,9 +65,7 @@ export default function Search(props: {
             value={searchText}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
-                const newUrl = "/SearchListing?search=" + searchText;
-                router.push(newUrl);
-                props.setOnSearch(false);
+                onSearch(searchText);
               }
             }}
             onChange={onChangeSearchText}
@@ -72,9 +86,7 @@ export default function Search(props: {
             <GoCodescanCheckmark
               className="text-primary-text cursor-pointer "
               onClick={() => {
-                const newUrl = "/SearchListing?search=" + searchText;
-                router.push(newUrl);
-                props.setOnSearch(false);
+                onSearch(searchText);
               }}
             />
           </div>
@@ -90,9 +102,7 @@ export default function Search(props: {
               <div
                 className="flex gap-4 items-center font-light"
                 onClick={() => {
-                  const newUrl = "/SearchListing?search=" + eachSearch;
-                  router.push(newUrl);
-                  props.setOnSearch(false);
+                  onSearch(eachSearch);
                 }}
               >
                 <MdHistory></MdHistory>
