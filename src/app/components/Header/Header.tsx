@@ -9,10 +9,12 @@ import { BsChevronRight } from "react-icons/bs";
 
 import { useRouter, usePathname } from "next/navigation";
 import { useState } from "react";
+import Search from "../Search/Search";
 export default function Header() {
   const router = useRouter();
   const pathname = usePathname();
   const [showProfileOptions, setShowProfileOptions] = useState(false);
+  const [onSearch, setOnSearch] = useState(false);
   const [showDropdownMenu, setShowDropdownMenu] = useState(false);
   const profileOptions = [
     "My Profile",
@@ -51,6 +53,10 @@ export default function Header() {
             type="text"
             readOnly
             value={""}
+            onClick={() => {
+              console.log("Clicked input");
+              setOnSearch(true);
+            }}
             className=" w-full col-span-10 ring-0 ring-transparent outline-none caret-transparent"
             placeholder="Search for events"
           ></input>
@@ -139,6 +145,9 @@ export default function Header() {
             );
           })}
         </div>
+      )}
+      {onSearch && (
+        <Search onSearch={onSearch} setOnSearch={setOnSearch}></Search>
       )}
     </div>
   );
